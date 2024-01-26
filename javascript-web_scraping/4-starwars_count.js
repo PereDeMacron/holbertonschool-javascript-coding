@@ -1,21 +1,22 @@
 #!/usr/bin/node
 
-const request = require('request');
-const filmsUrl = process.argv[2];
-let counter = 0;
+const request = require("request");
 
-request(filmsUrl, (error, response, body) => {
-  if (error) {
-    console.error(error);
-    return;
+const API = process.argv[2];
+const id = "18";
+
+request(API, function (error, response, body) {
+  if (error != null) {
+    console.error("error:", error);
   }
-  const allMovies = JSON.parse(body);
-  for (const result of allMovies.results) {
-    for (const character of result.characters) {
-      if (character.includes('18')) {
-        counter += 1;
+  const objMovie = JSON.parse(body);
+  let count = 0;
+  objMovie.results.forEach((element) => {
+    element.characters.forEach((item) => {
+      if (item.includes(id)) {
+        count += 1;
       }
-    }
-  }
-  console.log(counter);
+    });
+  });
+  console.log(count);
 });
